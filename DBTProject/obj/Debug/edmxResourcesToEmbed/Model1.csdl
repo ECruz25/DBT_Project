@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DBTheoryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Department">
+    <Key>
+      <PropertyRef Name="DepartmentID" />
+    </Key>
+    <Property Name="DepartmentID" Type="Int32" Nullable="false" />
+    <Property Name="DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Incidents" Relationship="Self.FK_Incident_Department" FromRole="Department" ToRole="Incident" />
+    <NavigationProperty Name="Profiles" Relationship="Self.FK_Profile_Department" FromRole="Department" ToRole="Profile" />
+  </EntityType>
+  <EntityType Name="Incident">
+    <Key>
+      <PropertyRef Name="IncidentID" />
+    </Key>
+    <Property Name="IncidentID" Type="Int32" Nullable="false" />
+    <Property Name="IncidentTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IncidentDescription" Type="Binary" MaxLength="140" FixedLength="false" />
+    <Property Name="IncidentCreationDate" Type="DateTime" Precision="0" />
+    <Property Name="StatusID" Type="Int32" />
+    <Property Name="UrgencyID" Type="Int32" />
+    <Property Name="UserID" Type="Int32" />
+    <Property Name="TechnicianID" Type="Int32" />
+    <Property Name="DepartmentID" Type="Int32" />
+    <NavigationProperty Name="Department" Relationship="Self.FK_Incident_Department" FromRole="Incident" ToRole="Department" />
+    <NavigationProperty Name="Status" Relationship="Self.FK_Incident_Status" FromRole="Incident" ToRole="Status" />
+    <NavigationProperty Name="Urgency" Relationship="Self.FK_Incident_Urgency" FromRole="Incident" ToRole="Urgency" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Incident_User" FromRole="Incident" ToRole="User" />
+    <NavigationProperty Name="User1" Relationship="Self.FK_Incident_User1" FromRole="Incident" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Profile">
+    <Key>
+      <PropertyRef Name="ProfileID" />
+    </Key>
+    <Property Name="ProfileID" Type="Int32" Nullable="false" />
+    <Property Name="ProfileName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DepartmentID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Department" Relationship="Self.FK_Profile_Department" FromRole="Profile" ToRole="Department" />
+    <NavigationProperty Name="Users" Relationship="Self.FK_User_Profile" FromRole="Profile" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Status">
+    <Key>
+      <PropertyRef Name="StatusID" />
+    </Key>
+    <Property Name="StatusID" Type="Int32" Nullable="false" />
+    <Property Name="StatusName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Incidents" Relationship="Self.FK_Incident_Status" FromRole="Status" ToRole="Incident" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Urgency">
+    <Key>
+      <PropertyRef Name="UrgencyID" />
+    </Key>
+    <Property Name="UrgencyID" Type="Int32" Nullable="false" />
+    <Property Name="UrgencyName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UrgencyDescription" Type="Binary" MaxLength="100" FixedLength="false" />
+    <NavigationProperty Name="Incidents" Relationship="Self.FK_Incident_Urgency" FromRole="Urgency" ToRole="Incident" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <Property Name="UserEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UserPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UserLastActivity" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UserBirthday" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="ProfileID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Incidents" Relationship="Self.FK_Incident_User" FromRole="User" ToRole="Incident" />
+    <NavigationProperty Name="Incidents1" Relationship="Self.FK_Incident_User1" FromRole="User" ToRole="Incident" />
+    <NavigationProperty Name="Profile" Relationship="Self.FK_User_Profile" FromRole="User" ToRole="Profile" />
+  </EntityType>
+  <Association Name="FK_Incident_Department">
+    <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+    <End Role="Incident" Type="Self.Incident" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="DepartmentID" />
+      </Principal>
+      <Dependent Role="Incident">
+        <PropertyRef Name="DepartmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Profile_Department">
+    <End Role="Department" Type="Self.Department" Multiplicity="1" />
+    <End Role="Profile" Type="Self.Profile" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="DepartmentID" />
+      </Principal>
+      <Dependent Role="Profile">
+        <PropertyRef Name="DepartmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Incident_Status">
+    <End Role="Status" Type="Self.Status" Multiplicity="0..1" />
+    <End Role="Incident" Type="Self.Incident" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Status">
+        <PropertyRef Name="StatusID" />
+      </Principal>
+      <Dependent Role="Incident">
+        <PropertyRef Name="StatusID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Incident_Urgency">
+    <End Role="Urgency" Type="Self.Urgency" Multiplicity="0..1" />
+    <End Role="Incident" Type="Self.Incident" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Urgency">
+        <PropertyRef Name="UrgencyID" />
+      </Principal>
+      <Dependent Role="Incident">
+        <PropertyRef Name="UrgencyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Incident_User">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Incident" Type="Self.Incident" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Incident">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Incident_User1">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Incident" Type="Self.Incident" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Incident">
+        <PropertyRef Name="TechnicianID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_User_Profile">
+    <End Role="Profile" Type="Self.Profile" Multiplicity="1" />
+    <End Role="User" Type="Self.User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Profile">
+        <PropertyRef Name="ProfileID" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="ProfileID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ProjectEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Departments" EntityType="Self.Department" />
+    <EntitySet Name="Incidents" EntityType="Self.Incident" />
+    <EntitySet Name="Profiles" EntityType="Self.Profile" />
+    <EntitySet Name="Status" EntityType="Self.Status" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="Urgencies" EntityType="Self.Urgency" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="FK_Incident_Department" Association="Self.FK_Incident_Department">
+      <End Role="Department" EntitySet="Departments" />
+      <End Role="Incident" EntitySet="Incidents" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Profile_Department" Association="Self.FK_Profile_Department">
+      <End Role="Department" EntitySet="Departments" />
+      <End Role="Profile" EntitySet="Profiles" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Incident_Status" Association="Self.FK_Incident_Status">
+      <End Role="Status" EntitySet="Status" />
+      <End Role="Incident" EntitySet="Incidents" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Incident_Urgency" Association="Self.FK_Incident_Urgency">
+      <End Role="Urgency" EntitySet="Urgencies" />
+      <End Role="Incident" EntitySet="Incidents" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Incident_User" Association="Self.FK_Incident_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Incident" EntitySet="Incidents" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Incident_User1" Association="Self.FK_Incident_User1">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Incident" EntitySet="Incidents" />
+    </AssociationSet>
+    <AssociationSet Name="FK_User_Profile" Association="Self.FK_User_Profile">
+      <End Role="Profile" EntitySet="Profiles" />
+      <End Role="User" EntitySet="Users" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
