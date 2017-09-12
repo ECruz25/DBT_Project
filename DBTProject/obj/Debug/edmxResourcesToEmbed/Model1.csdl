@@ -15,7 +15,7 @@
     </Key>
     <Property Name="IncidentID" Type="Int32" Nullable="false" />
     <Property Name="IncidentTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="IncidentDescription" Type="Binary" MaxLength="140" FixedLength="false" />
+    <Property Name="IncidentDescription" Type="String" />
     <Property Name="IncidentCreationDate" Type="DateTime" Precision="0" />
     <Property Name="StatusID" Type="Int32" />
     <Property Name="UrgencyID" Type="Int32" />

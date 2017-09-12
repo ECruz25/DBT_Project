@@ -123,5 +123,30 @@ namespace DBTProject.Controllers
             }
             base.Dispose(disposing);
         }
+        protected string CreateCode(int Amount)
+        {
+            if (Found("C-" + Amount))
+            {
+                return CreateCode(Amount + 1);
+            }
+            else
+            {
+                return "C-" + Amount;
+            }
+        }
+
+        protected Boolean Found(string Code)
+        {
+            Department Class = db.Departments.Find(Code); 
+
+            if (Class != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

@@ -52,8 +52,11 @@ namespace DBTProject.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IncidentID,IncidentTitle,IncidentDescription,IncidentCreationDate,StatusID,UrgencyID,UserID,TechnicianID,DepartmentID")] Incident incident)
+        public ActionResult Create([Bind(Include = "IncidentTitle,IncidentDescription,StatusID,UrgencyID,DepartmentID")] Incident incident)
         {
+            incident.IncidentCreationDate = DateTime.Today;
+            incident.UserID = -1;
+
             if (ModelState.IsValid)
             {
                 db.Incidents.Add(incident);
@@ -62,10 +65,8 @@ namespace DBTProject.Controllers
             }
 
             ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "DepartmentName", incident.DepartmentID);
-            ViewBag.StatusID = new SelectList(db.Status, "StatusID", "StatusName", incident.StatusID);
             ViewBag.UrgencyID = new SelectList(db.Urgencies, "UrgencyID", "UrgencyName", incident.UrgencyID);
             ViewBag.UserID = new SelectList(db.Users, "UserID", "UserEmail", incident.UserID);
-            ViewBag.TechnicianID = new SelectList(db.Users, "UserID", "UserEmail", incident.TechnicianID);
             return View(incident);
         }
 
@@ -143,6 +144,12 @@ namespace DBTProject.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private int GetID()
+        {
+
+            return -1;
         }
     }
 }

@@ -13,13 +13,13 @@
     </Key>
     <Property Name="IncidentID" Type="int" Nullable="false" />
     <Property Name="IncidentTitle" Type="varchar" MaxLength="50" />
-    <Property Name="IncidentDescription" Type="varbinary" MaxLength="140" />
     <Property Name="IncidentCreationDate" Type="date" />
     <Property Name="StatusID" Type="int" />
     <Property Name="UrgencyID" Type="int" />
     <Property Name="UserID" Type="int" />
     <Property Name="TechnicianID" Type="int" />
     <Property Name="DepartmentID" Type="int" />
+    <Property Name="IncidentDescription" Type="varchar" MaxLength="150" />
   </EntityType>
   <EntityType Name="Profile">
     <Key>

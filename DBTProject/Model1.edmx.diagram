@@ -10,7 +10,7 @@
         <EntityTypeShape EntityType="DBTheoryModel.Profile" Width="1.5" PointX="3" PointY="8.375" IsExpanded="true" />
         <EntityTypeShape EntityType="DBTheoryModel.Status" Width="1.5" PointX="5.25" PointY="5.375" IsExpanded="true" />
         <EntityTypeShape EntityType="DBTheoryModel.sysdiagram" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBTheoryModel.Urgency" Width="1.5" PointX="5.25" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBTheoryModel.Urgency" Width="1.5" PointX="7.5" PointY="9.875" IsExpanded="true" />
         <EntityTypeShape EntityType="DBTheoryModel.User" Width="1.5" PointX="5.25" PointY="7.875" IsExpanded="true" />
         <AssociationConnector Association="DBTheoryModel.FK_Incident_Department" ManuallyRouted="false" />
         <AssociationConnector Association="DBTheoryModel.FK_Profile_Department" ManuallyRouted="false" />

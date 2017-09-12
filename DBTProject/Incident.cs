@@ -16,7 +16,7 @@ namespace DBTProject
     {
         public int IncidentID { get; set; }
         public string IncidentTitle { get; set; }
-        public byte[] IncidentDescription { get; set; }
+        public string IncidentDescription { get; set; }
         public Nullable<System.DateTime> IncidentCreationDate { get; set; }
         public Nullable<int> StatusID { get; set; }
         public Nullable<int> UrgencyID { get; set; }
