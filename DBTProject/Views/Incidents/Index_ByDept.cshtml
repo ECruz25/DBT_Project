@@ -1,0 +1,66 @@
+﻿@model IEnumerable<DBTProject.Incident>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table id="incidents_bydept" class="table table-bordered table-responsive table-hover">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.IncidentTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IncidentCreationDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status.StatusName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Urgency.UrgencyName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User1.UserName)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IncidentTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IncidentCreationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status.StatusName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Urgency.UrgencyName)
+            </td>¿
+            <td>
+                @Html.DisplayFor(modelItem => item.User1.UserEmail)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.IncidentID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.IncidentID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.IncidentID })
+            </td>
+        </tr>
+    }
+
+</table>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#incidentsbydept").DataTable();
+        })
+    </script>
+}

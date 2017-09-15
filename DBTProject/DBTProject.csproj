@@ -209,6 +209,7 @@
     <Compile Include="Controllers\ProfilesController.cs" />
     <Compile Include="Controllers\StatusController.cs" />
     <Compile Include="Controllers\UrgenciesController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Department.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -528,6 +529,12 @@
     <Content Include="Views\Profiles\Details.cshtml" />
     <Content Include="Views\Profiles\Edit.cshtml" />
     <Content Include="Views\Profiles\Index.cshtml" />
+    <Content Include="Views\Incidents\Index_ByDept.cshtml" />
+    <Content Include="Views\Users\Create.cshtml" />
+    <Content Include="Views\Users\Delete.cshtml" />
+    <Content Include="Views\Users\Details.cshtml" />
+    <Content Include="Views\Users\Edit.cshtml" />
+    <Content Include="Views\Users\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

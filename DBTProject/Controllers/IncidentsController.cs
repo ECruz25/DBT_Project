@@ -18,7 +18,7 @@ namespace DBTProject.Controllers
         public ActionResult Index()
         {
             var incidents = db.Incidents.Include(i => i.Department).Include(i => i.Status).Include(i => i.Urgency).Include(i => i.User).Include(i => i.User1);
-            return View(incidents.ToList());
+            return View("Index_ByDept", incidents.ToList());
         }
 
         // GET: Incidents/Details/5

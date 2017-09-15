@@ -11,6 +11,7 @@ namespace DBTProject
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class User
     {
@@ -22,10 +23,22 @@ namespace DBTProject
         }
     
         public int UserID { get; set; }
+        [Required]
+        [Display(Name = "Email")]
         public string UserEmail { get; set; }
+        [Required]
+        [Display(Name = "Contraseña")]
+        [DataType(DataType.Password)]
         public string UserPassword { get; set; }
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Ultima Actividad")]
         public string UserLastActivity { get; set; }
+        [Required]
+        [Display(Name = "Nombre")]
         public string UserName { get; set; }
+        [Required]
+        [Display(Name = "Fecha de Nacimiento")]
+        [DataType(DataType.Date)]
         public System.DateTime UserBirthday { get; set; }
         public int ProfileID { get; set; }
     

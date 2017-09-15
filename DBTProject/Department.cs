@@ -11,6 +11,7 @@ namespace DBTProject
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class Department
     {
@@ -20,8 +21,13 @@ namespace DBTProject
             this.Incidents = new HashSet<Incident>();
             this.Profiles = new HashSet<Profile>();
         }
-    
+
+        [Required]
+        [Display(Name = "Id Departamento")]
         public int DepartmentID { get; set; }
+
+        [Required]
+        [Display(Name = "Nombre Departamento")]
         public string DepartmentName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

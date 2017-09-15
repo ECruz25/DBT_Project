@@ -10,107 +10,114 @@ using DBTProject;
 
 namespace DBTProject.Controllers
 {
-    public class DepartmentsController : Controller
+    public class UsersController : Controller
     {
         private ProjectEntities db = new ProjectEntities();
 
-        // GET: Departments
+        // GET: Users
         public ActionResult Index()
         {
-            return View(db.Departments.ToList());
+            var users = db.Users.Include(u => u.Profile);
+            return View(users.ToList());
         }
 
-        // GET: Departments/Details/5
+        // GET: Users/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Department department = db.Departments.Find(id);
-            if (department == null)
+            User user = db.Users.Find(id);
+            if (user == null)
             {
                 return HttpNotFound();
             }
-            return View(department);
+            return View(user);
         }
 
-        // GET: Departments/Create
+        // GET: Users/Create
         public ActionResult Create()
         {
+            ViewBag.ProfileID = new SelectList(db.Profiles, "ProfileID", "ProfileName");
             return View();
         }
 
-        // POST: Departments/Create
+        // POST: Users/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "DepartmentID,DepartmentName")] Department department)
+        public ActionResult Create([Bind(Include = "UserID,UserEmail,UserPassword,UserName,UserBirthday")] User user)
         {
+            user.UserLastActivity = DateTime.Now.ToString();
+            user.ProfileID = 1;
             if (ModelState.IsValid)
             {
-                db.Departments.Add(department);
+                db.Users.Add(user);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(department);
+            ViewBag.ProfileID = new SelectList(db.Profiles, "ProfileID", "ProfileName", user.ProfileID);
+            return View(user);
         }
 
-        // GET: Departments/Edit/5
+        // GET: Users/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Department department = db.Departments.Find(id);
-            if (department == null)
+            User user = db.Users.Find(id);
+            if (user == null)
             {
                 return HttpNotFound();
             }
-            return View(department);
+            ViewBag.ProfileID = new SelectList(db.Profiles, "ProfileID", "ProfileName", user.ProfileID);
+            return View(user);
         }
 
-        // POST: Departments/Edit/5
+        // POST: Users/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "DepartmentID,DepartmentName")] Department department)
+        public ActionResult Edit([Bind(Include = "UserID,UserEmail,UserPassword,UserLastActivity,UserName,UserBirthday,ProfileID")] User user)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(department).State = EntityState.Modified;
+                db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(department);
+            ViewBag.ProfileID = new SelectList(db.Profiles, "ProfileID", "ProfileName", user.ProfileID);
+            return View(user);
         }
 
-        // GET: Departments/Delete/5
+        // GET: Users/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Department department = db.Departments.Find(id);
-            if (department == null)
+            User user = db.Users.Find(id);
+            if (user == null)
             {
                 return HttpNotFound();
             }
-            return View(department);
+            return View(user);
         }
 
-        // POST: Departments/Delete/5
+        // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Department department = db.Departments.Find(id);
-            db.Departments.Remove(department);
+            User user = db.Users.Find(id);
+            db.Users.Remove(user);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -122,31 +129,6 @@ namespace DBTProject.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-        protected string CreateCode(int Amount)
-        {
-            if (Found("D-" + Amount))
-            {
-                return CreateCode(Amount + 1);
-            }
-            else
-            {
-                return "D-" + Amount;
-            }
-        }   
-
-        protected Boolean Found(string Code)
-        {
-            Department Class = db.Departments.Find(Code); 
-
-            if (Class != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
     }
 }
