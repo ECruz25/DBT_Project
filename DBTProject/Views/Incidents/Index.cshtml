@@ -7,7 +7,10 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+        @Html.ActionLink("Create New", "Create")
+</p>
+<p>
+        @Html.ActionLink("Export", "Export")
 </p>
 <table class="table">
     <tr>
@@ -30,10 +33,10 @@
             @Html.DisplayNameFor(model => model.Urgency.UrgencyName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.User.UserEmail)
+            @Html.DisplayNameFor(model => model.User.UserName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.User1.UserEmail)
+            @Html.DisplayNameFor(model => model.User1.UserName)
         </th>
         <th></th>
     </tr>
@@ -59,10 +62,10 @@
             @Html.DisplayFor(modelItem => item.Urgency.UrgencyName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.User.UserEmail)
+            @Html.DisplayFor(modelItem => item.User.UserName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.User1.UserEmail)
+            @Html.DisplayFor(modelItem => item.User1.UserName)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.IncidentID }) |

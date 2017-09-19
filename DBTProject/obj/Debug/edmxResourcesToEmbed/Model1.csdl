@@ -15,7 +15,7 @@
     </Key>
     <Property Name="IncidentID" Type="Int32" Nullable="false" />
     <Property Name="IncidentTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="IncidentDescription" Type="String" />
+    <Property Name="IncidentDescription" Type="String" MaxLength="150" Unicode="false" FixedLength="false" />
     <Property Name="IncidentCreationDate" Type="DateTime" Precision="0" />
     <Property Name="StatusID" Type="Int32" />
     <Property Name="UrgencyID" Type="Int32" />
@@ -62,7 +62,7 @@
     </Key>
     <Property Name="UrgencyID" Type="Int32" Nullable="false" />
     <Property Name="UrgencyName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="UrgencyDescription" Type="Binary" MaxLength="100" FixedLength="false" />
+    <Property Name="UrgencyDescription" Type="String" />
     <NavigationProperty Name="Incidents" Relationship="Self.FK_Incident_Urgency" FromRole="Urgency" ToRole="Incident" />
   </EntityType>
   <EntityType Name="User">

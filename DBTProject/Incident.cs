@@ -15,16 +15,9 @@ namespace DBTProject
     
     public partial class Incident
     {
-        [Display(Name = "ID Incidente")]
         public int IncidentID { get; set; }
-        [Required]
-        [Display(Name = "Titulo del Incidente")]
         public string IncidentTitle { get; set; }
-        [Required]
-        [Display(Name = "Descripcion del Incidente")]
         public string IncidentDescription { get; set; }
-        [Required]
-        [Display(Name = "Fecha de creacion del Incidente")]
         public Nullable<System.DateTime> IncidentCreationDate { get; set; }
         public Nullable<int> StatusID { get; set; }
         public Nullable<int> UrgencyID { get; set; }

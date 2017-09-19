@@ -22,7 +22,7 @@ namespace DBTProject
     
         public int UrgencyID { get; set; }
         public string UrgencyName { get; set; }
-        public byte[] UrgencyDescription { get; set; }
+        public string UrgencyDescription { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Incident> Incidents { get; set; }

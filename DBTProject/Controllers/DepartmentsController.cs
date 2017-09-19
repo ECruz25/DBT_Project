@@ -17,6 +17,20 @@ namespace DBTProject.Controllers
         // GET: Departments
         public ActionResult Index()
         {
+            /*
+            HomeController SharedController = new HomeController();
+            User User = SharedController.GetUser();
+            if (User != null)
+            {
+                Profile Profile = db.Profiles.Find(User.ProfileID);
+                if(Profile.ProfileName == "Admin")
+                {
+                    return View(db.Departments.ToList());
+                }
+                //Cambiar a  algo en el cual no tiene acceso
+                return View(db.Departments.ToList());
+            }
+            return RedirectToAction("Login", "Users");*/
             return View(db.Departments.ToList());
         }
 
@@ -96,7 +110,9 @@ namespace DBTProject.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Department department = db.Departments.Find(id);
+            Department department = (from TempDepartment in db.Departments
+                                     where TempDepartment.DepartmentID == id
+                                     select TempDepartment).FirstOrDefault();
             if (department == null)
             {
                 return HttpNotFound();

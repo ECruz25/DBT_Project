@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using DBTProject;
+using System.IO;
 
 namespace DBTProject.Controllers
 {
@@ -17,8 +18,46 @@ namespace DBTProject.Controllers
         // GET: Incidents
         public ActionResult Index()
         {
-            var incidents = db.Incidents.Include(i => i.Department).Include(i => i.Status).Include(i => i.Urgency).Include(i => i.User).Include(i => i.User1);
-            return View("Index_ByDept", incidents.ToList());
+            User User = GetUser();
+            Session["Controller"] = "Incidents";
+
+            if (User != null)
+            {
+                Profile Profile = db.Profiles.Find(User.ProfileID);
+                if (Profile.ProfileName == "Admin")
+                {
+                    var incidents = db.Incidents.Include(i => i.Department).Include(i => i.Status).Include(i => i.Urgency).Include(i => i.User).Include(i => i.User1);
+                    return View(incidents.ToList());
+                }
+                else if(Profile.ProfileName == "Tecnico")
+                {
+                    var Incidents = from TempIncidents in db.Incidents
+                                    where TempIncidents.TechnicianID == User.UserID
+                                    select TempIncidents;
+                    return View(Incidents.ToList());
+                }
+                else if(Profile.ProfileName == "Cliente")
+                {
+                    var Incidents = from TempIncidents in db.Incidents
+                                    where TempIncidents.UserID == User.UserID
+                                    select TempIncidents;
+                    return View(Incidents.ToList());
+                }
+                else
+                {
+                    //Cambiar a que no tiene acceso
+                    return HttpNotFound();
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Users");
+            }
+        }
+
+        public ActionResult Export()
+        {
+            return View();
         }
 
         // GET: Incidents/Details/5
@@ -42,8 +81,8 @@ namespace DBTProject.Controllers
             ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "DepartmentName");
             ViewBag.StatusID = new SelectList(db.Status, "StatusID", "StatusName");
             ViewBag.UrgencyID = new SelectList(db.Urgencies, "UrgencyID", "UrgencyName");
-            ViewBag.UserID = new SelectList(db.Users, "UserID", "UserEmail");
-            ViewBag.TechnicianID = new SelectList(db.Users, "UserID", "UserEmail");
+            ViewBag.UserID = new SelectList(db.Users, "UserID", "UserName");
+            ViewBag.TechnicianID = new SelectList(db.Users, "UserID", "UserName");
             return View();
         }
 
@@ -52,10 +91,13 @@ namespace DBTProject.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IncidentTitle,IncidentDescription,StatusID,UrgencyID,DepartmentID")] Incident incident)
+        public ActionResult Create([Bind(Include = "IncidentTitle,IncidentDescription,UrgencyID,DepartmentID")] Incident incident)
         {
+            incident.IncidentID = CreateCode(db.Incidents.Count());
             incident.IncidentCreationDate = DateTime.Today;
-            incident.UserID = -1;
+            incident.UserID = GetUser().UserID;
+            incident.TechnicianID = -1;
+            incident.StatusID = GetDefaultStatus().StatusID;
 
             if (ModelState.IsValid)
             {
@@ -146,10 +188,89 @@ namespace DBTProject.Controllers
             base.Dispose(disposing);
         }
 
-        private int GetID()
+        private int CreateCode(int amount)
         {
+            if (IdExists(amount))
+            {
+                return CreateCode(amount + 1);
+            }
+            else
+            {   
+                return amount;
+            }
+        }
 
-            return -1;
+        private bool IdExists(int id)
+        {
+            if (db.Incidents.Find(id) != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private User GetUser()
+        {
+            return Session["User"] as User;
+        }
+
+        [HttpPost]
+        public ActionResult Export([Bind(Include = "StartDate")] DateTime StartDate, [Bind(Include = "EndDate")] DateTime EndDate)
+        {
+            ReportByDate(StartDate, EndDate);
+            return View("Index", db.Incidents.ToList());
+        }
+
+        private ActionResult ReportByDate(DateTime StartingDate, DateTime EndDate)
+        {
+            var query = from Incidents in db.Incidents
+                        where Incidents.IncidentCreationDate >= StartingDate && Incidents.IncidentCreationDate <= EndDate
+                        select Incidents;
+           
+            string str = Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
+            StreamWriter file = new StreamWriter(str + "\\text2.csv");
+            file.WriteLine("IncidentID,Title,CreationDate,User,Status,Urgency,Technician");
+
+            foreach(var x in query)
+            {
+                Status Status = (from TempStatus in db.Status
+                                     where TempStatus.StatusID == x.StatusID
+                                     select TempStatus).FirstOrDefault();
+
+                Urgency Urgency = (from TempUrgency in db.Urgencies
+                                   where TempUrgency.UrgencyID == x.UrgencyID
+                                   select TempUrgency).FirstOrDefault();
+
+                User User = (from TempUser in db.Users
+                             where TempUser.UserID == x.UserID
+                             select TempUser).FirstOrDefault();
+
+                User User2 = (from TempUser in db.Users
+                             where TempUser.UserID == x.TechnicianID
+                             select TempUser).FirstOrDefault();
+
+                file.WriteLine(x.IncidentID + "," + x.IncidentTitle + "," + x.IncidentCreationDate + "," + User.UserName + 
+                                "," + Status.StatusName + "," + Urgency.UrgencyName + ","+ User2.UserName);
+            }
+
+            file.Flush();
+            file.Close();
+
+            return View("Index", db.Incidents.ToList());
+        }
+
+        private Status GetDefaultStatus()
+        {
+            Status Status = (from TempStatus in db.Status
+                             where TempStatus.StatusName == "Nuevo"
+                             select TempStatus).FirstOrDefault();
+
+            if(Status!=null)
+            {
+                return Status;
+            }
+            return (from TempStatus in db.Status
+                    select TempStatus).FirstOrDefault();
         }
     }
 }

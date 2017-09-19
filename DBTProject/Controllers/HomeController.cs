@@ -10,7 +10,7 @@ namespace DBTProject.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Login", "Users");
         }
 
         public ActionResult About()
@@ -25,6 +25,11 @@ namespace DBTProject.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+        
+        public User GetUser()
+        {
+            return Session["User"] as User;
         }
     }
 }

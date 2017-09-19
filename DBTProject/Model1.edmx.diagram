@@ -5,7 +5,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="00a07d9c8a134fc586a87e2c73db2e71" Name="Diagram1">
-        <EntityTypeShape EntityType="DBTheoryModel.Department" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBTheoryModel.Department" Width="1.5" PointX="1.75" PointY="5" IsExpanded="true" />
         <EntityTypeShape EntityType="DBTheoryModel.Incident" Width="1.5" PointX="7.5" PointY="5.5" IsExpanded="true" />
         <EntityTypeShape EntityType="DBTheoryModel.Profile" Width="1.5" PointX="3" PointY="8.375" IsExpanded="true" />
         <EntityTypeShape EntityType="DBTheoryModel.Status" Width="1.5" PointX="5.25" PointY="5.375" IsExpanded="true" />

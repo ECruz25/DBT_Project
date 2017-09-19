@@ -48,8 +48,9 @@ namespace DBTProject.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "UserID,UserEmail,UserPassword,UserName,UserBirthday")] User user)
+        public ActionResult Create([Bind(Include = "UserEmail,UserPassword,UserName,UserBirthday")] User user)
         {
+            user.UserID = 1;
             user.UserLastActivity = DateTime.Now.ToString();
             user.ProfileID = 1;
             if (ModelState.IsValid)
@@ -129,6 +130,36 @@ namespace DBTProject.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login([Bind(Include = "UserEmail,UserPassword")] User user)
+        {
+            
+            User UserTemp = (from Users in db.Users
+                             where Users.UserEmail == user.UserEmail &&
+                                    Users.UserPassword == user.UserPassword
+                             select Users).FirstOrDefault();
+            
+            if (UserTemp == null)
+            {
+                return RedirectToAction("SignUp");
+            }
+            else
+            {
+                Session["User"] = UserTemp;
+                return RedirectToAction("Index");
+            }
+        }
+
+        private string GetController()
+        {
+            return Session["Controller"] as string;
         }
     }
 }

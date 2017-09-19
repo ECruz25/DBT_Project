@@ -52,7 +52,7 @@
     </Key>
     <Property Name="UrgencyID" Type="int" Nullable="false" />
     <Property Name="UrgencyName" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="UrgencyDescription" Type="varbinary" MaxLength="100" />
+    <Property Name="UrgencyDescription" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="User">
     <Key>
