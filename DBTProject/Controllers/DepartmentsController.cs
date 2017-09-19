@@ -17,21 +17,29 @@ namespace DBTProject.Controllers
         // GET: Departments
         public ActionResult Index()
         {
-            /*
-            HomeController SharedController = new HomeController();
-            User User = SharedController.GetUser();
-            if (User != null)
+            User LoggedUser = GetUser();
+
+            if (LoggedUser != null)
             {
-                Profile Profile = db.Profiles.Find(User.ProfileID);
-                if(Profile.ProfileName == "Admin")
+                Profile Profile = (from TempProfile in db.Profiles
+                                   where TempProfile.ProfileID == LoggedUser.ProfileID
+                                   select TempProfile).FirstOrDefault();
+
+                if (Profile.ProfileName == "Admin")
                 {
                     return View(db.Departments.ToList());
                 }
-                //Cambiar a  algo en el cual no tiene acceso
-                return View(db.Departments.ToList());
+                else
+                {
+                    //Hacer algo que no tiene acceso
+                    return RedirectToAction("NoAccess", "Users");
+                }
             }
-            return RedirectToAction("Login", "Users");*/
-            return View(db.Departments.ToList());
+            else
+            {
+                Session["Controller"] = "Departments";
+                return RedirectToAction("Login", "Users");
+            }
         }
 
         // GET: Departments/Details/5
@@ -163,6 +171,11 @@ namespace DBTProject.Controllers
             {
                 return false;
             }
+        }
+
+        private User GetUser()
+        {
+            return Session["User"] as User;
         }
     }
 }

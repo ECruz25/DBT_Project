@@ -17,10 +17,31 @@ namespace DBTProject.Controllers
         // GET: Users
         public ActionResult Index()
         {
-            var users = db.Users.Include(u => u.Profile);
-            return View(users.ToList());
-        }
+            User LoggedUser = GetUser();
 
+            if (LoggedUser != null)
+            {
+                Profile Profile = (from TempProfile in db.Profiles
+                                   where TempProfile.ProfileID == LoggedUser.ProfileID
+                                   select TempProfile).FirstOrDefault();
+                
+                if(Profile.ProfileName == "Admin")
+                {
+                    var users = db.Users.Include(u => u.Profile);
+                    return View(users.ToList());
+                }
+                else
+                {
+                    //Hacer algo que no tiene acceso
+                    return RedirectToAction("NoAccess", "Users");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Users");
+            }
+        }
+        
         // GET: Users/Details/5
         public ActionResult Details(int? id)
         {
@@ -142,9 +163,9 @@ namespace DBTProject.Controllers
         {
             
             User UserTemp = (from Users in db.Users
-                             where Users.UserEmail == user.UserEmail &&
-                                    Users.UserPassword == user.UserPassword
-                             select Users).FirstOrDefault();
+                            where Users.UserEmail == user.UserEmail &&
+                            Users.UserPassword == user.UserPassword
+                            select Users).FirstOrDefault();
             
             if (UserTemp == null)
             {
@@ -153,13 +174,37 @@ namespace DBTProject.Controllers
             else
             {
                 Session["User"] = UserTemp;
-                return RedirectToAction("Index");
+                return RedirectToAction("Index",GetController());
             }
         }
 
         private string GetController()
         {
             return Session["Controller"] as string;
+        }
+
+        private User GetUser()
+        {
+            return Session["User"] as User;
+        }
+
+        public ActionResult NoAccess()
+        {
+            return View();
+        }
+
+        public ActionResult SignOut()
+        {
+            UpdateLastActivity(GetUser());
+            Session["User"] = null;
+            return RedirectToAction("Index", "Home");
+        }
+
+        private void UpdateLastActivity(User User)
+        {
+            User.UserLastActivity = DateTime.Now.ToString();
+            User Tempuser = db.Users.Find(User.UserLastActivity);
+            
         }
     }
 }

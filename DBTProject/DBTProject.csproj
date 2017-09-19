@@ -538,7 +538,7 @@
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Users\LogIn.cshtml" />
     <Content Include="Views\Incidents\Export.cshtml" />
-    <Content Include="Views\Users\Loginn.cshtml" />
+    <Content Include="Views\Users\NoAccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

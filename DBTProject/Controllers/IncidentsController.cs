@@ -46,7 +46,7 @@ namespace DBTProject.Controllers
                 else
                 {
                     //Cambiar a que no tiene acceso
-                    return HttpNotFound();
+                    return RedirectToAction("NoAccess", "Users");
                 }
             }
             else

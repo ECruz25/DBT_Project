@@ -17,7 +17,28 @@ namespace DBTProject.Controllers
         // GET: Urgencies
         public ActionResult Index()
         {
-            return View(db.Urgencies.ToList());
+            User LoggedUser = GetUser();
+
+            if (LoggedUser != null)
+            {
+                Profile Profile = (from TempProfile in db.Profiles
+                                   where TempProfile.ProfileID == LoggedUser.ProfileID
+                                   select TempProfile).FirstOrDefault();
+
+                if (Profile.ProfileName == "Admin")
+                {
+                    return View(db.Urgencies.ToList());
+                }
+                else
+                {
+                    //Hacer algo que no tiene acceso
+                    return RedirectToAction("NoAccess", "Users");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Users");
+            }
         }
 
         // GET: Urgencies/Details/5
@@ -122,6 +143,11 @@ namespace DBTProject.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private User GetUser()
+        {
+            return Session["User"] as User;
         }
     }
 }
