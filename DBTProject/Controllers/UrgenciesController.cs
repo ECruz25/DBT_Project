@@ -40,7 +40,7 @@ namespace DBTProject.Controllers
                 return RedirectToAction("Login", "Users");
             }
         }
-
+        
         // GET: Urgencies/Details/5
         public ActionResult Details(int? id)
         {

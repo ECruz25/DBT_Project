@@ -1,7 +1,7 @@
 ﻿<ul class="nav navbar-nav navbar-right">
     @if (@HttpContext.Current.Session["User"] != null)
     {
-        <li>@Html.ActionLink("SignOut", "SignOut", "Users")</li>
+        <li>@Html.ActionLink("SignOut", "LogOut", "Users")</li>
     }
     else
     {

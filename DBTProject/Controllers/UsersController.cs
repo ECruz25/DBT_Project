@@ -174,6 +174,7 @@ namespace DBTProject.Controllers
             else
             {
                 Session["User"] = UserTemp;
+                UpdateLastActivity(UserTemp);
                 return RedirectToAction("Index",GetController());
             }
         }
@@ -193,7 +194,7 @@ namespace DBTProject.Controllers
             return View();
         }
 
-        public ActionResult SignOut()
+        public ActionResult LogOut()
         {
             UpdateLastActivity(GetUser());
             Session["User"] = null;
@@ -202,9 +203,9 @@ namespace DBTProject.Controllers
 
         private void UpdateLastActivity(User User)
         {
-            User.UserLastActivity = DateTime.Now.ToString();
-            User Tempuser = db.Users.Find(User.UserLastActivity);
-            
+            User Tempuser = db.Users.Find(User.UserID);
+            Tempuser.UserLastActivity = DateTime.Now.ToString();
+            db.SaveChanges();
         }
     }
 }

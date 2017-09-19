@@ -10,7 +10,7 @@ namespace DBTProject.Controllers
     {
         public ActionResult Index()
         {
-            return RedirectToAction("Login", "Users");
+            return View();
         }
 
         public ActionResult About()
