@@ -32,6 +32,8 @@ namespace DBTProject
         [DataType(DataType.Password)]
         public string UserPassword { get; set; }
         public string UserLastActivity { get; set; }
+        [Required]
+        [Display(Name = "Nombre")]
         public string UserName { get; set; }
         [Required]
         [Display(Name = "Fecha de nacimiento")]

@@ -24,6 +24,8 @@ namespace DBTProject
         public Nullable<int> StatusID { get; set; }
         public Nullable<int> UrgencyID { get; set; }
         public Nullable<int> UserID { get; set; }
+        [Required]
+        [Display(Name = "Tecnico")]
         public Nullable<int> TechnicianID { get; set; }
         public Nullable<int> DepartmentID { get; set; }
     

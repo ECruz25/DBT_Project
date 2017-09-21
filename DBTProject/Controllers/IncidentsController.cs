@@ -32,7 +32,8 @@ namespace DBTProject.Controllers
                 else if(Profile.ProfileName == "Tecnico")
                 {
                     var Incidents = from TempIncidents in db.Incidents
-                                    where TempIncidents.TechnicianID == User.UserID
+                                    where TempIncidents.TechnicianID == User.UserID ||
+                                            TempIncidents.UserID == User.UserID
                                     select TempIncidents;
                     return View(Incidents.ToList());
                 }
@@ -127,8 +128,24 @@ namespace DBTProject.Controllers
             ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "DepartmentName", incident.DepartmentID);
             ViewBag.StatusID = new SelectList(db.Status, "StatusID", "StatusName", incident.StatusID);
             ViewBag.UrgencyID = new SelectList(db.Urgencies, "UrgencyID", "UrgencyName", incident.UrgencyID);
-            ViewBag.UserID = new SelectList(db.Users, "UserID", "UserEmail", incident.UserID);
-            ViewBag.TechnicianID = new SelectList(db.Users, "UserID", "UserEmail", incident.TechnicianID);
+            
+            var Technicians = from Tempuser in db.Users
+                              where Tempuser.ProfileID != 1
+                              select Tempuser;
+
+            List<SelectListItem> TechIDs = new List<SelectListItem>();
+
+            foreach (var x in Technicians)
+            {
+                TechIDs.Add(new SelectListItem
+                {
+                    Text = x.UserName,
+                    Value = x.UserID.ToString()
+                });
+            }
+
+            ViewBag.TechnicianID = TechIDs;
+
             return View(incident);
         }
 
@@ -137,7 +154,7 @@ namespace DBTProject.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IncidentID,IncidentTitle,IncidentDescription,IncidentCreationDate,StatusID,UrgencyID,UserID,TechnicianID,DepartmentID")] Incident incident)
+        public ActionResult Edit([Bind(Include = "IncidentTitle,IncidentDescription,StatusID,UrgencyID,TechnicianID,DepartmentID")] Incident incident)
         {
             if (ModelState.IsValid)
             {

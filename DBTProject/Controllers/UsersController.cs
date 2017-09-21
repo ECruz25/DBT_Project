@@ -24,8 +24,8 @@ namespace DBTProject.Controllers
                 Profile Profile = (from TempProfile in db.Profiles
                                    where TempProfile.ProfileID == LoggedUser.ProfileID
                                    select TempProfile).FirstOrDefault();
-                
-                if(Profile.ProfileName == "Admin")
+
+                if (Profile.ProfileName == "Admin")
                 {
                     var users = db.Users.Include(u => u.Profile);
                     return View(users.ToList());
@@ -33,7 +33,7 @@ namespace DBTProject.Controllers
                 else
                 {
                     //Hacer algo que no tiene acceso
-                    return RedirectToAction("NoAccess", "Users");
+                    return RedirectToAction("NoAccess");
                 }
             }
             else
@@ -41,7 +41,7 @@ namespace DBTProject.Controllers
                 return RedirectToAction("Login", "Users");
             }
         }
-        
+
         // GET: Users/Details/5
         public ActionResult Details(int? id)
         {
@@ -71,9 +71,13 @@ namespace DBTProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "UserEmail,UserPassword,UserName,UserBirthday")] User user)
         {
-            user.UserID = 1;
+            user.UserID = CreateCode(db.Users.Count());
             user.UserLastActivity = DateTime.Now.ToString();
             user.ProfileID = 1;
+            if (UserExists(user.UserEmail))
+            {
+
+            }
             if (ModelState.IsValid)
             {
                 db.Users.Add(user);
@@ -83,6 +87,34 @@ namespace DBTProject.Controllers
 
             ViewBag.ProfileID = new SelectList(db.Profiles, "ProfileID", "ProfileName", user.ProfileID);
             return View(user);
+        }
+
+        public JsonResult CheckUsernameAvailability(string userdata)
+        {
+            System.Threading.Thread.Sleep(200);
+            var SeachData = db.Users.Where(x => x.UserEmail == userdata).SingleOrDefault();
+            if (SeachData != null)
+            {
+                return Json(1);
+            }
+            else
+            {
+                return Json(0);
+            }
+
+        }
+
+        private bool UserExists(string email)
+        {
+            User user = (from TempUser in db.Users
+                         where TempUser.UserEmail == email
+                         select TempUser).FirstOrDefault();
+
+            if (user != null)
+            {
+                return true;
+            }
+            return false;
         }
 
         // GET: Users/Edit/5
@@ -161,12 +193,12 @@ namespace DBTProject.Controllers
         [HttpPost]
         public ActionResult Login([Bind(Include = "UserEmail,UserPassword")] User user)
         {
-            
+
             User UserTemp = (from Users in db.Users
-                            where Users.UserEmail == user.UserEmail &&
-                            Users.UserPassword == user.UserPassword
-                            select Users).FirstOrDefault();
-            
+                             where Users.UserEmail == user.UserEmail &&
+                             Users.UserPassword == user.UserPassword
+                             select Users).FirstOrDefault();
+
             if (UserTemp == null)
             {
                 return RedirectToAction("SignUp");
@@ -175,7 +207,7 @@ namespace DBTProject.Controllers
             {
                 Session["User"] = UserTemp;
                 UpdateLastActivity(UserTemp);
-                return RedirectToAction("Index",GetController());
+                return RedirectToAction("Index", GetController());
             }
         }
 
@@ -191,7 +223,7 @@ namespace DBTProject.Controllers
 
         public ActionResult NoAccess()
         {
-            return View();
+            return View("NoAccess");
         }
 
         public ActionResult LogOut()
@@ -206,6 +238,27 @@ namespace DBTProject.Controllers
             User Tempuser = db.Users.Find(User.UserID);
             Tempuser.UserLastActivity = DateTime.Now.ToString();
             db.SaveChanges();
+        }
+
+        private int CreateCode(int amount)
+        {
+            if (IdExists(amount))
+            {
+                return CreateCode(amount + 1);
+            }
+            else
+            {
+                return amount;
+            }
+        }
+
+        private bool IdExists(int id)
+        {
+            if (db.Users.Find(id) != null)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
