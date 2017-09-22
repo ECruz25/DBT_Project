@@ -1,0 +1,82 @@
+﻿@model DBTProject.Incident
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Incident</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.IncidentTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IncidentTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IncidentDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IncidentDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IncidentCreationDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IncidentCreationDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Department.DepartmentName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Department.DepartmentName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status.StatusName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status.StatusName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Urgency.UrgencyName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Urgency.UrgencyName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.UserEmail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.UserEmail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User1.UserEmail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User1.UserEmail)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.IncidentID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

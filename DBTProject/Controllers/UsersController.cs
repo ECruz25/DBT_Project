@@ -69,23 +69,24 @@ namespace DBTProject.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "UserEmail,UserPassword,UserName,UserBirthday")] User user)
+        public ActionResult Create([Bind(Include = "UserEmail,UserPassword,UserName,UserBirthday,ProfileID")] User user)
         {
             user.UserID = CreateCode(db.Users.Count());
             user.UserLastActivity = DateTime.Now.ToString();
-            user.ProfileID = 1;
+
             if (UserExists(user.UserEmail))
             {
-
+                ViewBag.Message = "Correo electronico ya en uso";
+                return View("NoAccess");
             }
-            if (ModelState.IsValid)
+            else if (ModelState.IsValid)
             {
                 db.Users.Add(user);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ProfileID = new SelectList(db.Profiles, "ProfileID", "ProfileName", user.ProfileID);
+            ViewBag.ProfileID = new SelectList(db.Profiles, "ProfileID", "ProfileName");
             return View(user);
         }
 
@@ -187,13 +188,13 @@ namespace DBTProject.Controllers
 
         public ActionResult Login()
         {
+            ViewBag.Message = Session["ViewBag"];
             return View();
         }
 
         [HttpPost]
         public ActionResult Login([Bind(Include = "UserEmail,UserPassword")] User user)
         {
-
             User UserTemp = (from Users in db.Users
                              where Users.UserEmail == user.UserEmail &&
                              Users.UserPassword == user.UserPassword
@@ -201,14 +202,52 @@ namespace DBTProject.Controllers
 
             if (UserTemp == null)
             {
-                return RedirectToAction("SignUp");
+                UserTemp = (from Users in db.Users
+                            where Users.UserEmail == user.UserEmail
+                            select Users).FirstOrDefault();
+                if (UserTemp == null)
+                {
+                    Session["ViewBag"] = null;
+                    return RedirectToAction("SignUp");
+                }
+                Session["ViewBag"] = "Usuario Incorrecto";
+                return RedirectToAction("Login");
             }
             else
             {
+                Session["ViewBag"] = null;
                 Session["User"] = UserTemp;
                 UpdateLastActivity(UserTemp);
                 return RedirectToAction("Index", GetController());
             }
+        }
+
+        public ActionResult SignUp()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SignUp([Bind(Include = "UserEmail,UserPassword,UserName,UserBirthday")] User user)
+        {
+            user.UserID = CreateCode(db.Users.Count());
+            user.UserLastActivity = DateTime.Now.ToString();
+            user.ProfileID = 1;
+            if (UserExists(user.UserEmail))
+            {
+                ViewBag.Message = "Correo electronico ya en uso";
+                return View("NoAccess");
+            }
+            else if (ModelState.IsValid)
+            {
+                db.Users.Add(user);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.ProfileID = new SelectList(db.Profiles, "ProfileID", "ProfileName", user.ProfileID);
+            return View(user);
         }
 
         private string GetController()
@@ -223,6 +262,7 @@ namespace DBTProject.Controllers
 
         public ActionResult NoAccess()
         {
+            ViewBag.Message = "You don't have the required permissions to acces this page";
             return View("NoAccess");
         }
 

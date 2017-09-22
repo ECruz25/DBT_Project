@@ -6,10 +6,11 @@ using System.Web.Mvc;
 
 namespace DBTProject.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : Controller 
     {
         public ActionResult Index()
         {
+            Session["ViewBag"] = null;
             return View();
         }
 

@@ -1,0 +1,66 @@
+﻿@model DBTProject.User
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>User</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UserEmail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserEmail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserPassword)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserPassword)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserLastActivity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserLastActivity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserBirthday)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserBirthday)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Profile.ProfileName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Profile.ProfileName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.UserID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,92 @@
+﻿@model IEnumerable<DBTProject.Incident>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<p>
+    @Html.ActionLink("Export", "Export")
+</p>
+<table id="incidents" class="table table-bordered table-responsive table-hover success">
+    <thead>
+        <tr class="success">
+            <th class="succ">
+                @Html.DisplayNameFor(model => model.IncidentTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IncidentDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IncidentCreationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Department.DepartmentName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status.StatusName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Urgency.UrgencyName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.UserName)
+            </th>
+            <th>
+                Tecnico
+            </th>
+            <th>
+                Opciones
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IncidentTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IncidentDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IncidentCreationDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Department.DepartmentName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status.StatusName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Urgency.UrgencyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User1.UserName)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.IncidentID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.IncidentID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.IncidentID })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#incidents").DataTable();
+        })
+    </script>
+}
+

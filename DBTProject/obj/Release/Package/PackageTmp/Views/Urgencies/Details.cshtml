@@ -1,0 +1,34 @@
+﻿@model DBTProject.Urgency
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Urgency</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UrgencyName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UrgencyName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UrgencyDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UrgencyDescription)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.UrgencyID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

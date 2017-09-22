@@ -15,10 +15,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayName("Departamento")
+                Departamento
             </th>
             <th>
-                @Html.DisplayName("Opciones")
+                Opciones
             </th>
         </tr>
     </thead>
@@ -39,24 +39,6 @@
 @section scripts
 {
     <script>
-        /*$(document).ready(function () {
-            $("#departments .js-delete").on("click", function () {
-                var button = $(this);
-                bootbox.confirm("Are you sure you want to delete this customer?", function (result) {
-                    if (result) {
-                        $.ajax({
-                            url: "/Departments/Delete/" + button.attr("data-department-id"),
-                            method: "POSTS",
-                            success: function () {
-                                button.parents("tr").remove();
-                                console.log("Success");
-                            }
-                        });
-                    }
-                });
-            });
-        });
-        */
         $(document).ready(function () {
             $("#departments").DataTable();
         })

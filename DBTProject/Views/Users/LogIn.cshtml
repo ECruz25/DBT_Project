@@ -4,8 +4,6 @@
     ViewBag.Title = "LogIn";
 }
 
-<h2>LogIn</h2>
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -35,4 +33,10 @@
             </div>
         </div>
     </div>
+}
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <script type="text/javascript">
+        alert("@ViewBag.Message");
+    </script>
 }
