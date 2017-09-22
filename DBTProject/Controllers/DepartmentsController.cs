@@ -76,8 +76,7 @@ namespace DBTProject.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            return View(department);
+            return RedirectToAction("Index");
         }
 
         // GET: Departments/Edit/5
