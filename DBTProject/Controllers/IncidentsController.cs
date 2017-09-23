@@ -96,7 +96,7 @@ namespace DBTProject.Controllers
         public ActionResult Create([Bind(Include = "IncidentTitle,IncidentDescription,UrgencyID,DepartmentID")] Incident incident)
         {
             incident.IncidentID = CreateCode(100);
-            incident.IncidentCreationDate = DateTime.Today.ToLocalTime();
+            //incident.IncidentCreationDate = DateTime.Today.ToLocalTime();
             incident.UserID = GetUser().UserID;
             incident.TechnicianID = -1;
             incident.StatusID = GetDefaultStatus().StatusID;
