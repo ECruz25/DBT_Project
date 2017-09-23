@@ -79,7 +79,6 @@ namespace DBTProject.Controllers
         // GET: Incidents/Create
         public ActionResult Create()
         {
-            ViewBag.Message = Session["testing"];
             ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "DepartmentName");
             ViewBag.StatusID = new SelectList(db.Status, "StatusID", "StatusName");
             ViewBag.UrgencyID = new SelectList(db.Urgencies, "UrgencyID", "UrgencyName");
@@ -95,25 +94,21 @@ namespace DBTProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IncidentTitle,IncidentDescription,UrgencyID,DepartmentID")] Incident incident)
         {
-            //incident.IncidentID = CreateCode(100);
-            incident.IncidentCreationDate = DateTime.Today.ToLocalTime();
+            incident.IncidentID = CreateCode(db.Incidents.Count());
+            incident.IncidentCreationDate = DateTime.Today;
             incident.UserID = GetUser().UserID;
             incident.TechnicianID = -1;
             incident.StatusID = GetDefaultStatus().StatusID;
-            if (ModelState.IsValid)
-            {
-                db.Incidents.Add(incident);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                Session["testing"] = incident.IncidentID + " " + incident.IncidentCreationDate + " "  + " " + incident.UserID + " " + incident.StatusID;
-                ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "DepartmentName", incident.DepartmentID);
-                ViewBag.UrgencyID = new SelectList(db.Urgencies, "UrgencyID", "UrgencyName", incident.UrgencyID);
-                ViewBag.UserID = new SelectList(db.Users, "UserID", "UserEmail", incident.UserID);
-                return View(incident);
-            }
+
+            db.Incidents.Add(incident);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+
+            /*
+            ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "DepartmentName", incident.DepartmentID);
+            ViewBag.UrgencyID = new SelectList(db.Urgencies, "UrgencyID", "UrgencyName", incident.UrgencyID);
+            ViewBag.UserID = new SelectList(db.Users, "UserID", "UserEmail", incident.UserID);
+            return View(incident);*/
         }
 
         // GET: Incidents/Edit/5
@@ -272,6 +267,7 @@ namespace DBTProject.Controllers
                 file.WriteLine(x.IncidentID + "," + x.IncidentTitle + "," + x.IncidentCreationDate + "," + User.UserName +
                                 "," + Status.StatusName + "," + Urgency.UrgencyName + "," + User2.UserName);
             }
+
             file.Flush();
             file.Close();
             return View("Index", db.Incidents.ToList());
