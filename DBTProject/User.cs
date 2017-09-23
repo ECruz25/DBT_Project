@@ -35,7 +35,6 @@ namespace DBTProject
         [Required]
         [Display(Name = "Nombre")]
         public string UserName { get; set; }
-        [Required]
         [Display(Name = "Fecha de nacimiento")]
         [DataType(DataType.Date)]
         public System.DateTime UserBirthday { get; set; }
