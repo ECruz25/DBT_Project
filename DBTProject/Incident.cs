@@ -15,6 +15,7 @@ namespace DBTProject
     
     public partial class Incident
     {
+        [Required]
         public int IncidentID { get; set; }
         [Required]
         [Display(Name = "Titulo")]
