@@ -236,6 +236,7 @@ namespace DBTProject.Controllers
             user.ProfileID = 1;
             if (UserExists(user.UserEmail))
             {
+                //modificar para que aparezca un msj
                 ViewBag.Message = "Correo electronico ya en uso";
                 return View("NoAccess");
             }

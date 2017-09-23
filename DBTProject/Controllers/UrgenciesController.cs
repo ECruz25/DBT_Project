@@ -67,8 +67,9 @@ namespace DBTProject.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "UrgencyID,UrgencyName,UrgencyDescription")] Urgency urgency)
+        public ActionResult Create([Bind(Include = "UrgencyName,UrgencyDescription")] Urgency urgency)
         {
+            urgency.UrgencyID = CreateCode(db.Urgencies.Count());
             if (ModelState.IsValid)
             {
                 db.Urgencies.Add(urgency);
@@ -148,6 +149,27 @@ namespace DBTProject.Controllers
         private User GetUser()
         {
             return Session["User"] as User;
+        }
+
+        private int CreateCode(int amount)
+        {
+            if (IdExists(amount))
+            {
+                return CreateCode(amount + 1);
+            }
+            else
+            {
+                return amount;
+            }
+        }
+
+        private bool IdExists(int id)
+        {
+            if (db.Urgencies.Find(id) != null)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
