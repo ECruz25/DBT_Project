@@ -79,6 +79,7 @@ namespace DBTProject.Controllers
         // GET: Incidents/Create
         public ActionResult Create()
         {
+            ViewBag.Message = Session["testing"];
             ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "DepartmentName");
             ViewBag.StatusID = new SelectList(db.Status, "StatusID", "StatusName");
             ViewBag.UrgencyID = new SelectList(db.Urgencies, "UrgencyID", "UrgencyName");
@@ -108,6 +109,7 @@ namespace DBTProject.Controllers
             }
             else
             {
+                Session["testing"] = incident.IncidentID + " " + incident.IncidentCreationDate + " " + incident + " " + incident.UserID + " " + incident.StatusID;
                 ViewBag.Message = incident.IncidentID + " " + incident.IncidentCreationDate +" "+ incident + " " + incident.UserID + " " + incident.StatusID;
                 ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "DepartmentName", incident.DepartmentID);
                 ViewBag.UrgencyID = new SelectList(db.Urgencies, "UrgencyID", "UrgencyName", incident.UrgencyID);
