@@ -19,14 +19,26 @@ namespace DBTProject
         [Required]
         [Display(Name = "Titulo")]
         public string IncidentTitle { get; set; }
+        [Required]
+        [Display(Name = "Descripcion")]
         public string IncidentDescription { get; set; }
+        [Required]
+        [Display(Name = "Fecha de creacion")]
         public Nullable<System.DateTime> IncidentCreationDate { get; set; }
+        [Required]
+        [Display(Name = "Estado")]
         public Nullable<int> StatusID { get; set; }
+        [Required]
+        [Display(Name = "Urgencia")]
         public Nullable<int> UrgencyID { get; set; }
+        [Required]
+        [Display(Name = "Usuario")]
         public Nullable<int> UserID { get; set; }
         [Required]
         [Display(Name = "Tecnico")]
         public Nullable<int> TechnicianID { get; set; }
+        [Required]
+        [Display(Name = "Departamento")]
         public Nullable<int> DepartmentID { get; set; }
     
         public virtual Department Department { get; set; }
