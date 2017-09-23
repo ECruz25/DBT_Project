@@ -106,10 +106,13 @@ namespace DBTProject.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "DepartmentName", incident.DepartmentID);
-            ViewBag.UrgencyID = new SelectList(db.Urgencies, "UrgencyID", "UrgencyName", incident.UrgencyID);
-            ViewBag.UserID = new SelectList(db.Users, "UserID", "UserEmail", incident.UserID);
-            return View(incident);
+            else
+            {
+                ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "DepartmentName", incident.DepartmentID);
+                ViewBag.UrgencyID = new SelectList(db.Urgencies, "UrgencyID", "UrgencyName", incident.UrgencyID);
+                ViewBag.UserID = new SelectList(db.Users, "UserID", "UserEmail", incident.UserID);
+                return View(incident);
+            }
         }
 
         // GET: Incidents/Edit/5
@@ -268,10 +271,8 @@ namespace DBTProject.Controllers
                 file.WriteLine(x.IncidentID + "," + x.IncidentTitle + "," + x.IncidentCreationDate + "," + User.UserName +
                                 "," + Status.StatusName + "," + Urgency.UrgencyName + "," + User2.UserName);
             }
-
             file.Flush();
             file.Close();
-
             return View("Index", db.Incidents.ToList());
         }
 
