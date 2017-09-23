@@ -17,27 +17,36 @@ namespace DBTProject
     {
         [Required(ErrorMessage ="Requerido")]
         public int IncidentID { get; set; }
+
         [Required(ErrorMessage = "Requerido")]
         [Display(Name = "Titulo")]
         public string IncidentTitle { get; set; }
+
         [Required(ErrorMessage = "Requerido")]
         [Display(Name = "Descripcion")]
         public string IncidentDescription { get; set; }
+
         [Required(ErrorMessage = "Requerido")]
         [Display(Name = "Fecha de creacion")]
+        [DataType(DataType.Date)]
         public Nullable<System.DateTime> IncidentCreationDate { get; set; }
+
         [Required(ErrorMessage = "Requerido")]
         [Display(Name = "Estado")]
         public Nullable<int> StatusID { get; set; }
+
         [Required(ErrorMessage = "Requerido")]
         [Display(Name = "Urgencia")]
         public Nullable<int> UrgencyID { get; set; }
+
         [Required(ErrorMessage = "Requerido")]
         [Display(Name = "Usuario")]
         public Nullable<int> UserID { get; set; }
+
         [Required(ErrorMessage = "Requerido")]
         [Display(Name = "Tecnico")]
         public Nullable<int> TechnicianID { get; set; }
+
         [Required(ErrorMessage = "Requerido")]
         [Display(Name = "Departamento")]
         public Nullable<int> DepartmentID { get; set; }

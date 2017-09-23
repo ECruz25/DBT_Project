@@ -100,7 +100,6 @@ namespace DBTProject.Controllers
             incident.UserID = GetUser().UserID;
             incident.TechnicianID = -1;
             incident.StatusID = GetDefaultStatus().StatusID;
-
             if (ModelState.IsValid)
             {
                 db.Incidents.Add(incident);
@@ -110,7 +109,6 @@ namespace DBTProject.Controllers
             else
             {
                 Session["testing"] = incident.IncidentID + " " + incident.IncidentCreationDate + " "  + " " + incident.UserID + " " + incident.StatusID;
-                ViewBag.Message = incident.IncidentID + " " + incident.IncidentCreationDate +" "+ incident + " " + incident.UserID + " " + incident.StatusID;
                 ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "DepartmentName", incident.DepartmentID);
                 ViewBag.UrgencyID = new SelectList(db.Urgencies, "UrgencyID", "UrgencyName", incident.UrgencyID);
                 ViewBag.UserID = new SelectList(db.Users, "UserID", "UserEmail", incident.UserID);
