@@ -109,7 +109,7 @@ namespace DBTProject.Controllers
             }
             else
             {
-                Session["testing"] = incident.IncidentID + " " + incident.IncidentCreationDate + " " + incident + " " + incident.UserID + " " + incident.StatusID;
+                Session["testing"] = incident.IncidentID + " " + incident.IncidentCreationDate + " "  + " " + incident.UserID + " " + incident.StatusID;
                 ViewBag.Message = incident.IncidentID + " " + incident.IncidentCreationDate +" "+ incident + " " + incident.UserID + " " + incident.StatusID;
                 ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "DepartmentName", incident.DepartmentID);
                 ViewBag.UrgencyID = new SelectList(db.Urgencies, "UrgencyID", "UrgencyName", incident.UrgencyID);
