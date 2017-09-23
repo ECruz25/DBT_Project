@@ -29,7 +29,7 @@ namespace DBTProject.Controllers
                     var incidents = db.Incidents.Include(i => i.Department).Include(i => i.Status).Include(i => i.Urgency).Include(i => i.User).Include(i => i.User1);
                     return View(incidents.ToList());
                 }
-                else if(Profile.ProfileName == "Tecnico")
+                else if (Profile.ProfileName == "Tecnico")
                 {
                     var Incidents = from TempIncidents in db.Incidents
                                     where TempIncidents.TechnicianID == User.UserID ||
@@ -37,7 +37,7 @@ namespace DBTProject.Controllers
                                     select TempIncidents;
                     return View(Incidents.ToList());
                 }
-                else if(Profile.ProfileName == "Cliente")
+                else if (Profile.ProfileName == "Cliente")
                 {
                     var Incidents = from TempIncidents in db.Incidents
                                     where TempIncidents.UserID == User.UserID
@@ -94,7 +94,7 @@ namespace DBTProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IncidentTitle,IncidentDescription,UrgencyID,DepartmentID")] Incident incident)
         {
-            incident.IncidentID = CreateCode(db.Incidents.Count());
+            incident.IncidentID = CreateCode(100);
             incident.IncidentCreationDate = DateTime.Today;
             incident.UserID = GetUser().UserID;
             incident.TechnicianID = -1;
@@ -106,7 +106,6 @@ namespace DBTProject.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
             ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "DepartmentName", incident.DepartmentID);
             ViewBag.UrgencyID = new SelectList(db.Urgencies, "UrgencyID", "UrgencyName", incident.UrgencyID);
             ViewBag.UserID = new SelectList(db.Users, "UserID", "UserEmail", incident.UserID);
@@ -128,7 +127,7 @@ namespace DBTProject.Controllers
             ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "DepartmentName", incident.DepartmentID);
             ViewBag.StatusID = new SelectList(db.Status, "StatusID", "StatusName", incident.StatusID);
             ViewBag.UrgencyID = new SelectList(db.Urgencies, "UrgencyID", "UrgencyName", incident.UrgencyID);
-            
+
             var Technicians = from Tempuser in db.Users
                               where Tempuser.ProfileID != 1
                               select Tempuser;
@@ -212,7 +211,7 @@ namespace DBTProject.Controllers
                 return CreateCode(amount + 1);
             }
             else
-            {   
+            {
                 return amount;
             }
         }
@@ -243,16 +242,16 @@ namespace DBTProject.Controllers
             var query = from Incidents in db.Incidents
                         where Incidents.IncidentCreationDate >= StartingDate && Incidents.IncidentCreationDate <= EndDate
                         select Incidents;
-           
+
             string str = Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
             StreamWriter file = new StreamWriter(str + "\\text2.csv");
             file.WriteLine("IncidentID,Title,CreationDate,User,Status,Urgency,Technician");
 
-            foreach(var x in query)
+            foreach (var x in query)
             {
                 Status Status = (from TempStatus in db.Status
-                                     where TempStatus.StatusID == x.StatusID
-                                     select TempStatus).FirstOrDefault();
+                                 where TempStatus.StatusID == x.StatusID
+                                 select TempStatus).FirstOrDefault();
 
                 Urgency Urgency = (from TempUrgency in db.Urgencies
                                    where TempUrgency.UrgencyID == x.UrgencyID
@@ -263,11 +262,11 @@ namespace DBTProject.Controllers
                              select TempUser).FirstOrDefault();
 
                 User User2 = (from TempUser in db.Users
-                             where TempUser.UserID == x.TechnicianID
-                             select TempUser).FirstOrDefault();
+                              where TempUser.UserID == x.TechnicianID
+                              select TempUser).FirstOrDefault();
 
-                file.WriteLine(x.IncidentID + "," + x.IncidentTitle + "," + x.IncidentCreationDate + "," + User.UserName + 
-                                "," + Status.StatusName + "," + Urgency.UrgencyName + ","+ User2.UserName);
+                file.WriteLine(x.IncidentID + "," + x.IncidentTitle + "," + x.IncidentCreationDate + "," + User.UserName +
+                                "," + Status.StatusName + "," + Urgency.UrgencyName + "," + User2.UserName);
             }
 
             file.Flush();
@@ -282,7 +281,7 @@ namespace DBTProject.Controllers
                              where TempStatus.StatusName == "Nuevo"
                              select TempStatus).FirstOrDefault();
 
-            if(Status!=null)
+            if (Status != null)
             {
                 return Status;
             }
