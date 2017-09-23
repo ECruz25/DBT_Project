@@ -94,7 +94,7 @@ namespace DBTProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IncidentTitle,IncidentDescription,UrgencyID,DepartmentID")] Incident incident)
         {
-            incident.IncidentID = CreateCode(db.Incidents.Count());
+            incident.IncidentID = CreateCode(1);
             incident.IncidentCreationDate = DateTime.Today;
             incident.UserID = GetUser().UserID;
             incident.TechnicianID = -1;
