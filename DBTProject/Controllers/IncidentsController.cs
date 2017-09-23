@@ -110,7 +110,7 @@ namespace DBTProject.Controllers
             ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "DepartmentName", incident.DepartmentID);
             ViewBag.UrgencyID = new SelectList(db.Urgencies, "UrgencyID", "UrgencyName", incident.UrgencyID);
             ViewBag.UserID = new SelectList(db.Users, "UserID", "UserEmail", incident.UserID);
-            return RedirectToAction("Index");
+            return View(incident);
         }
 
         // GET: Incidents/Edit/5
