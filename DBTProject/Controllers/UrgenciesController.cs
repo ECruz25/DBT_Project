@@ -69,14 +69,13 @@ namespace DBTProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "UrgencyName,UrgencyDescription")] Urgency urgency)
         {
-            urgency.UrgencyID = CreateCode(100);
+            urgency.UrgencyID = CreateCode(db.Urgencies.Count());
             if (ModelState.IsValid)
             {
                 db.Urgencies.Add(urgency);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
             return View(urgency);
         }
 

@@ -11,6 +11,7 @@ namespace DBTProject
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class Urgency
     {
@@ -21,7 +22,13 @@ namespace DBTProject
         }
     
         public int UrgencyID { get; set; }
+        [Required(ErrorMessage = "Necesario")]
+        [DataType(DataType.Text)]
+        [Display(Name = "Nombre")]
         public string UrgencyName { get; set; }
+        [Required(ErrorMessage = "Necesario")]
+        [DataType(DataType.Text)]
+        [Display(Name = "Descripcion")]
         public string UrgencyDescription { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -85,7 +85,6 @@ namespace DBTProject.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
             ViewBag.ProfileID = new SelectList(db.Profiles, "ProfileID", "ProfileName");
             return View(user);
         }
@@ -102,7 +101,6 @@ namespace DBTProject.Controllers
             {
                 return Json(0);
             }
-
         }
 
         private bool UserExists(string email)
@@ -139,7 +137,7 @@ namespace DBTProject.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserID,UserEmail,UserPassword,UserLastActivity,UserName,UserBirthday,ProfileID")] User user)
+        public ActionResult Edit([Bind(Include = "UserID,UserEmail,UserPassword,UserLastActivity,UserName,ProfileID")] User user)
         {
             if (ModelState.IsValid)
             {
